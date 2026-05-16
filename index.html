@@ -7,13 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="search-wrapper" id="searchWrapper">
         <div class="header">
             <h1>📘 Word Insight</h1>
-            <p>Enter any English word form (past, gerund, comparative) to find its root, rank, and frequency — based on the top 5,000 lemmas.</p>
+            <p class="subtitle">Enter any English word form to find its root, rank, and frequency.</p>
         </div>
         <input type="text" class="search-box" id="searchInput" placeholder='Try "took", "happier", "running"' autofocus>
+    </div>
 
+    <div class="content-area" id="contentArea">
         <div class="result-card" id="resultCard">
             <div class="searched-word" id="displayWord"></div>
             <div class="info-grid">
