@@ -1,2 +1,12 @@
-# word-insight
-🔍 A smart English word lookup tool. Enter any word form (past, gerund, comparative) to instantly find its root lemma, frequency rank, and usage stats — based on the top 5,000 words from COCA.
+# 📘 Word Insight
+
+A smart English word lookup tool for learners. Enter any word form — past tense, gerund, comparative — and get:
+
+- 🌱 **Root lemma** (e.g., "took" → "take")
+- 🏆 **Frequency rank** (COCA top 5,000)
+- 📊 **Word frequency** & **Lemma frequency**
+- 🏷️ **Part of speech**
+
+Built with vanilla HTML/CSS/JS. Data sourced from [wordfrequency.info](http://www.wordfrequency.info) (Corpus of Contemporary American English).
+
+**Live Demo:** [your-vercel-link.vercel.app](https://your-vercel-link.vercel.app)
