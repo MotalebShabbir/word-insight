@@ -9,4 +9,4 @@ A smart English word lookup tool for learners. Enter any word form — past tens
 
 Built with vanilla HTML/CSS/JS. Data sourced from [wordfrequency.info](http://www.wordfrequency.info) (Corpus of Contemporary American English).
 
-**Live Demo:** [your-vercel-link.vercel.app](https://wordinsight.vercel.app)
+**Live Demo:** [wordinsight.vercel.app](https://wordinsight.vercel.app)
