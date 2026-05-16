@@ -80,22 +80,17 @@ body {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* Content area (results + not found + footer) */
+/* Content area - initially hidden, then shown with dynamic padding from JS */
 .content-area {
     max-width: 640px;
     margin: 0 auto;
     padding: 1.5rem;
-    display: none;   /* Initially hidden */
+    display: none;
 }
 
 body.search-active .content-area {
-    display: block;   /* visible when search is active */
-    padding-top: 1rem;
-}
-
-/* When search wrapper is fixed, push content down */
-body.search-active .search-wrapper.fixed + .content-area {
-    padding-top: 150px;  /* height of fixed bar + some gap */
+    display: block;
+    /* padding-top is set dynamically by JavaScript */
 }
 
 .result-card {
