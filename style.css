@@ -17,36 +17,55 @@ body {
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1.5rem;
 }
 
-.container {
-    width: 100%;
-    max-width: 640px;
+/* Initial centered layout */
+.search-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    background: var(--bg);
+}
+
+/* Fixed top bar when active */
+.search-wrapper.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    min-height: auto;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background: var(--bg);
 }
 
 .header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .header h1 {
     font-size: 2rem;
     font-weight: 700;
     color: #0f172a;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 
-.header p {
+.subtitle {
     color: #475569;
     font-size: 0.95rem;
 }
 
 .search-box {
     width: 100%;
+    max-width: 600px;
     padding: 1rem 1.25rem;
     font-size: 1.1rem;
     border: 2px solid var(--border);
@@ -54,7 +73,6 @@ body {
     background: var(--card-bg);
     transition: all 0.2s;
     outline: none;
-    margin-bottom: 1.5rem;
 }
 
 .search-box:focus {
@@ -62,11 +80,29 @@ body {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
+/* Content area (results + not found + footer) */
+.content-area {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: none;   /* Initially hidden */
+}
+
+body.search-active .content-area {
+    display: block;   /* visible when search is active */
+    padding-top: 1rem;
+}
+
+/* When search wrapper is fixed, push content down */
+body.search-active .search-wrapper.fixed + .content-area {
+    padding-top: 150px;  /* height of fixed bar + some gap */
+}
+
 .result-card {
     background: var(--card-bg);
     border-radius: 16px;
     padding: 1.5rem 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     border: 1px solid var(--border);
     display: none;
 }
@@ -126,6 +162,7 @@ body {
     border-radius: 12px;
     padding: 1rem;
     display: none;
+    margin-top: 1rem;
 }
 
 .not-found.visible {
