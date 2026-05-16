@@ -1,11 +1,11 @@
 (function() {
     const searchInput = document.getElementById('searchInput');
     const searchWrapper = document.getElementById('searchWrapper');
+    const contentArea = document.getElementById('contentArea');
     const resultCard = document.getElementById('resultCard');
     const notFound = document.getElementById('notFound');
     const body = document.body;
 
-    // DOM elements for result fields
     const displayWord = document.getElementById('displayWord');
     const lemmaEl = document.getElementById('lemma');
     const rankEl = document.getElementById('rank');
@@ -14,7 +14,6 @@
     const posEl = document.getElementById('pos');
     const inputWordEl = document.getElementById('inputWord');
 
-    // Part of Speech mapping
     const posMap = {
         'a': 'Article',
         'c': 'Conjunction',
@@ -34,40 +33,46 @@
     let wordData = [];
     let debounceTimer;
 
-    // Load JSON
     fetch('words.json')
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         })
-        .then(data => {
-            wordData = data;
-        })
+        .then(data => { wordData = data; })
         .catch(error => {
             console.error('Failed to load words.json:', error);
             notFound.textContent = '⚠️ Could not load dictionary data. Please try again later.';
             notFound.classList.add('visible');
-            body.classList.add('search-active'); // to show the area
+            body.classList.add('search-active');
             searchWrapper.classList.add('fixed');
+            updateContentPadding();
         });
 
-    // Activate fixed mode when input focused or has text
+    // Dynamically adjust content area top padding based on fixed search bar height
+    function updateContentPadding() {
+        if (searchWrapper.classList.contains('fixed')) {
+            const height = searchWrapper.offsetHeight;
+            contentArea.style.paddingTop = height + 'px';
+        } else {
+            contentArea.style.paddingTop = '';
+        }
+    }
+
     function activateFixedMode() {
         if (!searchWrapper.classList.contains('fixed')) {
             searchWrapper.classList.add('fixed');
             body.classList.add('search-active');
+            updateContentPadding();
         }
     }
 
-    // Deactivate fixed mode only if input is empty and not focused (optional, you might keep it fixed)
     function deactivateFixedMode() {
         if (searchInput.value.trim() === '' && document.activeElement !== searchInput) {
-            // Optional: return to centered state when input is cleared and loses focus
-            // For better UX we can keep fixed once activated, but here we allow returning to center
             searchWrapper.classList.remove('fixed');
             body.classList.remove('search-active');
             resultCard.classList.remove('visible');
             notFound.classList.remove('visible');
+            contentArea.style.paddingTop = '';
         }
     }
 
@@ -75,7 +80,13 @@
     searchInput.addEventListener('input', activateFixedMode);
     searchInput.addEventListener('blur', deactivateFixedMode);
 
-    // Search handler with debounce
+    // On window resize, recalculate padding if fixed
+    window.addEventListener('resize', () => {
+        if (searchWrapper.classList.contains('fixed')) {
+            updateContentPadding();
+        }
+    });
+
     function performSearch(query) {
         const trimmedQuery = query.trim().toLowerCase();
         if (!trimmedQuery) {
@@ -83,9 +94,7 @@
             notFound.classList.remove('visible');
             return;
         }
-
         const found = wordData.find(item => item.word.toLowerCase() === trimmedQuery);
-
         if (found) {
             displayWord.textContent = found.word;
             lemmaEl.textContent = found.lemma || '—';
@@ -106,25 +115,18 @@
     searchInput.addEventListener('input', (e) => {
         clearTimeout(debounceTimer);
         const query = e.target.value;
-        // Show loader or just wait
-        debounceTimer = setTimeout(() => {
-            performSearch(query);
-        }, 300);
+        if (query.trim() === '') {
+            resultCard.classList.remove('visible');
+            notFound.classList.remove('visible');
+            return;
+        }
+        debounceTimer = setTimeout(() => performSearch(query), 300);
     });
 
-    // Also handle enter key immediately (optional)
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             clearTimeout(debounceTimer);
             performSearch(searchInput.value);
-        }
-    });
-
-    // If user clears input, hide results
-    searchInput.addEventListener('input', (e) => {
-        if (e.target.value.trim() === '') {
-            resultCard.classList.remove('visible');
-            notFound.classList.remove('visible');
         }
     });
 })();
