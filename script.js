@@ -12,6 +12,23 @@
     const posEl = document.getElementById('pos');
     const inputWordEl = document.getElementById('inputWord');
 
+    // Part of Speech full form mapping (from CLAWS7 tagset via wordfrequency.info)
+    const posMap = {
+        'a': 'Article',
+        'c': 'Conjunction',
+        'd': 'Determiner',
+        'e': 'Existential there',
+        'i': 'Preposition',
+        'j': 'Adjective',
+        'm': 'Number',
+        'n': 'Noun',
+        'p': 'Pronoun',
+        'r': 'Adverb',
+        'u': 'Interjection',
+        'v': 'Verb',
+        'x': 'Negation'
+    };
+
     let wordData = [];
 
     // Load JSON
@@ -47,7 +64,8 @@
             rankEl.textContent = found.lemRank || '—';
             wordFreqEl.textContent = found.wordFreq ? Number(found.wordFreq).toLocaleString() : '—';
             lemmaFreqEl.textContent = found.lemFreq ? Number(found.lemFreq).toLocaleString() : '—';
-            posEl.textContent = found.PoS || '—';
+            // Use full form of PoS
+            posEl.textContent = posMap[found.PoS] || found.PoS || '—';
             inputWordEl.textContent = found.word;
 
             resultCard.classList.add('visible');
